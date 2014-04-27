@@ -1,0 +1,24 @@
+{
+    "services": [
+        {
+            "name": "Colors",
+            "path": "/colors",
+            "responses": {
+                "get" : [
+                    {
+                        "name": "Valid colors",
+                        "active": true,
+                        "body": "{\"colors\": [\"red\", \"blue\"]}"
+                    }
+                ],
+                "post": [
+                    {
+                        "name": "Add color",
+                        "active": true,
+                        "body": "{\"erros\": []}"
+                    }
+                ]
+            }
+        }
+    ]
+}

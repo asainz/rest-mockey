@@ -22,7 +22,7 @@ exports.module = function(){
 
         if( !responses ){
             errors.push({
-                name: 'Invalid scervice'
+                name: 'Invalid service'
             });
             return errors;
         }

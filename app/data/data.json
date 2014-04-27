@@ -7,7 +7,7 @@
                 "get" : [
                     {
                         "name": "Valid colors",
-                        "active": false,
+                        "active": true,
                         "body": "{\"colors\": [\"red\", \"blue\"]}"
                     }
                 ],

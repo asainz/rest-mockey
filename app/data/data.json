@@ -10,7 +10,7 @@
                     {
                         "name": "Valid colors",
                         "active": true,
-                        "body": "{\"colors\": [\"red\", \"blue\"]}"
+                        "body": "{\"colors\": [\"green\", \"orange\"]}"
                     }
                 ],
                 "post": [

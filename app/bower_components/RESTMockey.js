@@ -178,7 +178,7 @@ RESTMockey.prototype.init = function(data){
         var responses = getAllResponses(service, params.method);
         var response;
 
-        if( service.mode === 'statcic' ){
+        if( service.mode === 'static' ){
             responses.forEach(function(_response){
                 if( response ){ return; }
                 if( _response.active ){

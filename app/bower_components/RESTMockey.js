@@ -104,6 +104,15 @@ RESTMockey.prototype.init = function(data){
         return matching;
     }
 
+    function replacePathParams(path, params){
+        var replaced = path;
+        params.forEach(function(param){
+            replaced = replaced.replace(':'+param.key, param.value);
+        });
+
+        return replaced;
+    }
+
     // function getServiceBy(field, value){
     //     var service;
     //     self.data.services.forEach(function(_service){
@@ -156,32 +165,53 @@ RESTMockey.prototype.init = function(data){
         return service;
     }
 
-    function getAllResponses(params){
-        var service = getServiceByPath(params.path);
-
-        if( service.responses[params.method] ){
-            return service.responses[params.method]
+    function getAllResponses(service, method){
+        if( service.responses[method] ){
+            return service.responses[method]
         }
 
         //TODO: Handle error
     }
 
     function getServiceResponse(params){
-        var responses = getAllResponses(params);
+        var service = getServiceByPath(params.path);
+        var responses = getAllResponses(service, params.method);
         var response;
 
-        responses.forEach(function(_response){
-            if( response ){ return; }
-            if( _response.active ){
-                response = JSON.parse(_response.body);
-            }
-        });
+        if( service.mode === 'statcic' ){
+            responses.forEach(function(_response){
+                if( response ){ return; }
+                if( _response.active ){
+                    response = JSON.parse(_response.body);
+                }
+            });
 
-        if( response ){
-            return response;
+            if( response ){
+                return response;
+            }
+
+            //TODO: Handle error
         }
 
-        //TODO: Handle error
+        if( service.mode === 'dynamic' ){
+
+            responses.forEach(function(_response){
+                if( response ){ return; }
+                var generatedPath = replacePathParams(service.path, _response.params);
+
+                //TODO: Normalice paths. We need to make sure we have or haven't trailing slashes in both paths
+                if( generatedPath === params.path ){
+                    response = JSON.parse(_response.body);
+                }
+            });
+
+            if( response ){
+                return response;
+            }
+
+            //TODO: Handle error
+
+        }
     }
 
     return {

@@ -4,6 +4,7 @@
             "id": "312312312312",
             "name": "Colors",
             "path": "/colors",
+            "mode": "static",
             "responses": {
                 "get" : [
                     {
@@ -24,7 +25,8 @@
         {
             "id": "3424234234234",
             "name": "Color details",
-            "path": "/colors/:colorId/",
+            "path": "/colors/:colorId",
+            "mode": "dynamic",
             "params": {
                 "colorId": "alpha",
                 "other": "alpha",
@@ -36,17 +38,23 @@
                     {
                         "name": "Color orange",
                         "active": true,
-                        "params": {
-                            "colorId": "orange"
-                        },
+                        "params": [
+                            {
+                                "key": "colorId",
+                                "value": "orange"
+                            }
+                        ],
                         "body": "{\"description\": \"awesome color\"}"
                     },
                     {
                         "name": "Color green",
                         "active": true,
-                        "params": {
-                            "colorId": "green"
-                        },
+                        "params": [
+                            {
+                                "key": "colorId",
+                                "value": "green"
+                            }
+                        ],
                         "body": "{\"description\": \"i like it too\"}"
                     }
                 ]

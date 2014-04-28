@@ -6,8 +6,8 @@ RESTful mockey-like app
 
 ```
 $ git clone
-npm install
-bower install
+$npm install
+$bower install
 ```
 
 ## Run it

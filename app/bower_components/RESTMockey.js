@@ -22,11 +22,11 @@ RESTMockey.prototype.init = function(data){
         var regexp, flags;
 
         if( matches ){
-            regexp = matches[0];
-            flags = matches && matches[1] || '';
+            regexp = matches[1];
+            flags = matches && matches[2] || '';
         }
 
-        return new RexExp(regexp, flags);
+        return new RegExp(regexp, flags);
     }
 
     function matchServicePath(service, value){
@@ -71,29 +71,29 @@ RESTMockey.prototype.init = function(data){
             // the paths are different
             if( patternSegment.indexOf(":") === -1 &&  patternSegment !== valueSegment  ){
                 matching = false;
-            }else{
-                // if the pattern doesn't start with a colon and it matches the value, we don't need to do more checking
+            }
+
+            if( patternSegment.indexOf(":") === -1 ){
+                // if the pattern doesn't start with a colon we don't need to do more checking
                 // in this iteration.
                 return;
             }
 
             //TODO: Hanle the case then the pattern type is not specifid
-            console.log(patternSegment);
             var patternType = patternParams[ patternSegment.replace(':', '') ];
-            var patternRegex;
-
+            var patternRegexp;
             switch(patternType){
                 case 'numeric':
-                    patternRegex = /^\d+$/;
+                    patternRegexp = /^\d+$/;
                     break;
                 case 'letter':
-                    patternRegex = /^[a-zA-Z]+$/;
+                    patternRegexp = /^[a-zA-Z]+$/;
                     break;
                 case 'alpha':
-                    patternRegex = /^[a-zA-Z0-9]+$/;
+                    patternRegexp = /^[a-zA-Z0-9]+$/;
                     break;
                 default: 
-                    patternRegex = convertToRegexp(patternType);
+                    patternRegexp = convertToRegexp(patternType);
                     break;
             }
 

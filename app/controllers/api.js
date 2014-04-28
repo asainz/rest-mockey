@@ -1,7 +1,5 @@
 var Service = require('../models/service.js').module();
 
-console.log('***', Service);
-
 exports.index = function(req, res){
     var method = req.method.toLowerCase();
     var path = req.params[0];

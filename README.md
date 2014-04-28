@@ -21,5 +21,5 @@ $ grunt
 ```
 http://localhost:3000/api/colors/orange
 http://localhost:3000/api/colors/green
-http://localhost:3000/api/colors/colors
+http://localhost:3000/api/colors
 ```

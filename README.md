@@ -1,12 +1,25 @@
-#Installation
-`git clone git@github.com:asainz/loginAPI.git loginAPI`
-`cd loginAPI`
-`npm install`
-`bower install`
+#  RESTFul Mockey
 
+RESTful mockey-like app
 
-#How to run the app
-`mongod #start mongo`
-`grunt`
+## Installation
 
-open `http://localhost:3000`
+```
+$ git clone
+npm install
+bower install
+```
+
+## Run it
+
+```
+$ grunt
+```
+
+## Test it
+
+```
+http://localhost:3000/api/colors/orange
+http://localhost:3000/api/colors/green
+http://localhost:3000/api/colors/colors
+```

@@ -4,11 +4,127 @@ RESTMockey.prototype.init = function(data){
     var self = this;
     self.data = data;
 
-    function getServiceBy(field, value){
+    // utility function form underscore
+    function compact(array){
+        var compacted = [];
+
+        array.forEach(function(val){
+            if( val ){
+                compacted.push(val);
+            }
+        });
+
+        return compacted;
+    }
+
+    function convertToRegexp(string){
+        var matches = string.match(/^\/(.+)\/([a-z]+)?$/i);
+        var regexp, flags;
+
+        if( matches ){
+            regexp = matches[0];
+            flags = matches && matches[1] || '';
+        }
+
+        return new RexExp(regexp, flags);
+    }
+
+    function matchServicePath(service, value){
+        var pattern = service.path;
+        var patternParams = service.params;
+
+        if( pattern === value ){
+            return true;
+        }
+        
+        // It we dont have at least one colon in the value, it means that it's
+        // a path without params, so a match will not exists. Thus, we return false now
+        if( pattern.indexOf(':') === -1 ){
+            return false;
+        }
+
+        // If we do have a colon, we need to figure out whether or not the path matchs the pattern
+        // colors/orange
+        // colors/:colorId
+        
+        /*
+            We'll break the pattern and the value in segments, delimited by slashes.
+            If the pattern segment doesn't start with a :, well try an exact match
+            If the pattern segment does start with a :, we'll check what kind of value we're expecting (string, number, regexp)
+            and try to match it.
+            If everything matches, we found our service
+         */
+        
+        var patternSegments = compact(pattern.split('/'));
+        var valueSegments = compact(value.split('/'));
+
+        if( patternSegments.length !== valueSegments.length ){
+            return false;
+        }
+
+        var matching = true;
+        patternSegments.forEach(function(patternSegment, index){
+            if( !matching ){ return; }
+            var valueSegment = valueSegments[index];
+
+            // If the pattern segment doesn't start with a colon (it's a explicit value) and doesn't match the value segment
+            // the paths are different
+            if( patternSegment.indexOf(":") === -1 &&  patternSegment !== valueSegment  ){
+                matching = false;
+            }else{
+                // if the pattern doesn't start with a colon and it matches the value, we don't need to do more checking
+                // in this iteration.
+                return;
+            }
+
+            //TODO: Hanle the case then the pattern type is not specifid
+            console.log(patternSegment);
+            var patternType = patternParams[ patternSegment.replace(':', '') ];
+            var patternRegex;
+
+            switch(patternType){
+                case 'numeric':
+                    patternRegex = /^\d+$/;
+                    break;
+                case 'letter':
+                    patternRegex = /^[a-zA-Z]+$/;
+                    break;
+                case 'alpha':
+                    patternRegex = /^[a-zA-Z0-9]+$/;
+                    break;
+                default: 
+                    patternRegex = convertToRegexp(patternType);
+                    break;
+            }
+
+            matching = !!valueSegment.match( patternRegexp );
+
+        });
+
+        return matching;
+    }
+
+    // function getServiceBy(field, value){
+    //     var service;
+    //     self.data.services.forEach(function(_service){
+    //         if( service ){ return; }
+    //         if( matchService( _service, field, value ) ){
+    //             service = _service;
+    //         }
+    //     });
+
+    //     if(!service){
+    //         //TODO: Handle error
+    //     }
+
+    //     return service;
+    // };
+
+    function getServiceById(serviceId){
         var service;
         self.data.services.forEach(function(_service){
             if( service ){ return; }
-            if( _service[field] === value){
+            if( _service.id === serviceId ){
                 service = _service;
             }
         });
@@ -18,10 +134,6 @@ RESTMockey.prototype.init = function(data){
         }
 
         return service;
-    };
-
-    function getServiceById(serviceId){
-        return getServiceBy('id', serviceId);
     }
 
     function getAllServices(){
@@ -29,12 +141,24 @@ RESTMockey.prototype.init = function(data){
     }
 
     function getServiceByPath(servicePath){
-        return getServiceBy('path', servicePath);
+        var service;
+        self.data.services.forEach(function(_service){
+            if( service ){ return; }
+            if( matchServicePath( _service, servicePath ) ){
+                service = _service;
+            }
+        });
+
+        if(!service){
+            //TODO: Handle error
+        }
+
+        return service;
     }
 
     function getAllResponses(params){
         var service = getServiceByPath(params.path);
-        
+
         if( service.responses[params.method] ){
             return service.responses[params.method]
         }

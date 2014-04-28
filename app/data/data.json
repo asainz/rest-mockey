@@ -20,6 +20,37 @@
                     }
                 ]
             }
+        },
+        {
+            "id": "3424234234234",
+            "name": "Color details",
+            "path": "/colors/:colorId/",
+            "params": {
+                "colorId": "alpha",
+                "other": "alpha",
+                "other": "letter",
+                "another": "/regexp/"
+            },
+            "responses": {
+                "get": [
+                    {
+                        "name": "Color orange",
+                        "active": true,
+                        "params": {
+                            "colorId": "orange"
+                        },
+                        "body": "{\"description\": \"awesome color\"}"
+                    },
+                    {
+                        "name": "Color green",
+                        "active": true,
+                        "params": {
+                            "colorId": "green"
+                        },
+                        "body": "{\"description\": \"i like it too\"}"
+                    }
+                ]
+            }
         }
     ]
 }

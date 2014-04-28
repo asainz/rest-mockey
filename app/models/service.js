@@ -1,6 +1,20 @@
 exports.module = function(){
     var data = require('../data/data.json');
 
+    var get = function(serviceId){
+        if( !serviceId ){
+            return data.services;
+        }
+
+        var obj;
+        data.services.forEach(function(service){
+            if(!obj && service.id === serviceId){
+                obj = service;
+            }
+        });
+        return obj;
+    };
+
     var getResponses = function(params){
         var responses;
         data.services.forEach(function(service){
@@ -44,6 +58,7 @@ exports.module = function(){
     };
 
     return {
+        get: get,
         getActiveScenario: getActiveScenario
     };
 };

@@ -1,6 +1,7 @@
 {
     "services": [
-        {
+        {   
+            "id": "312312312312",
             "name": "Colors",
             "path": "/colors",
             "responses": {

@@ -1,4 +1,8 @@
 extends ../layout
 
 block content
-  h1 Hello to REST Mockey
+  h1 Services
+  ul
+    for service in services
+        li
+            a(href="api#{service.path}")= service.name
